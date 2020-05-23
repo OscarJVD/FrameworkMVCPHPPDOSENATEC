@@ -21,6 +21,7 @@ class Database extends PDO
 	{
 		try{
 			// ESTANDAR
+			// Hola jdajsdl
 			parent::__construct("{$this->driver}:host={$this->host};
 				dbname={$this->dbName}; charset={$this->charset}",$this->user,$this->password);
 	        $this->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
