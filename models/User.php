@@ -42,9 +42,18 @@ class User
 	{
 		try {			
 			// PARA EL ESTADO
-			$data['id_estado_FK'] = 1;
+			$props = [
+				"controller" => "nulo",
+				"method" => "nulo",
+				'id_estado_FK' => 1,
+				'id_rol_FK' => null,
+				'nombre_usuario' => $data["name"],
+				"correo" => $data["email"],
+				"clave" => $data["password"]
+			];
 			// metodo generico 
-			$this->pdo->insert('usuario',$data);
+			// return $props;
+		   $this->pdo->insert('usuario',$props);
 
 		} catch (PDOException $e) {
 			die($e->getMessage());

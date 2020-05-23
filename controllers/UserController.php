@@ -34,8 +34,10 @@ class UserController
 
     public function save()
     {
+
         $this->model->newUser($_REQUEST);
         header('Location: ?controller=user');
+
     }
 }
 

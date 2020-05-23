@@ -59,20 +59,20 @@ class Database extends PDO
 		try {
 			
 			// metodo para ordenar el array de datos
-			ksort($data);
+			// ksort($data);
 			// eliminar los indices de controller y metodo
 			unset($data['controller'],$data['method']);
  			// UNIR ELEMNTOS DE UN ARRAY EN UN SOLO STRING
-			$fieldNames = implode('¨¨',array_keys($data));//array_keys trae los indices y values de los input que estoy enviando //de las tildes :v
+			$fieldNames = implode('` , `' ,array_keys($data));//array_keys trae los indices y values de los input que estoy enviando //de las tildes :v
 			$fieldValues = ':'.implode(', :', array_keys($data));
  			// comillas como en mysql
 			$strSql = $this->prepare("INSERT INTO $table(`$fieldNames`)VALUES ($fieldValues)");
-
+			$datos =[];
 			foreach ($data as $key => $value) {
 					//asigna cada value del form a una key 
 				$strSql->bindValue(":$key",$value);
-			}
 
+			}
 			$strSql->execute();
 			
 
