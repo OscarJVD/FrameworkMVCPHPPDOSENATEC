@@ -1,34 +1,77 @@
 <main class="container">
 	<section class="col-md-12 text-center">
-		<h1>Listado de películas</h1>
-		<div>
-			<h2>Películas</h2>
-			<a href="#" class="btn btn-success">Agregar</a>
+		<h1 class="p-2">Listado de películas</h1>
+		<div class="row justify-content-center my-2">
+			<div class="col-12 col-sm-12 my-2">
+				<h2 class="">Películas</h2>
+				<a href="?controller=movie&method=add" class="btn btn-success ">Agregar</a>
+			</div>
 		</div>
-		<section class="col-md-12 table-responsive">
+
+		<section class="col-12 col-sm-12 col-md-12 table-responsive">
 			
-			<table class="table table-striped table-dark table-hover">
+			<table class="table table-striped table-dark table-hover stacktable datatable table-bordered table-sm">
 			  <thead>
 			    <tr>
 			      <th scope="col">#</th>
 			      <th scope="col">Película</th>
 			      <th scope="col">Descripción</th>
-			      <th scope="col">id_usuario_FK</th>
-			      <th scope="col">id_estado_FK</th>
+			      <th scope="col">Usuario</th>
+			      <th scope="col">Estado</th>
+			      <th scope="col">Categorías</th>
 			      <th scope="col">Acciones</th>
+			      <th scope="col">Editar</th>
+
 			    </tr>
 			  </thead>
 			  <tbody>
+
 			  	<?php foreach ($movies as $movie) : ?>
 				    <tr>
-				      <td><?php echo $movie->id_pelicula_PK ?></td>
-				      <td><?php echo $movie->nombre_pelicula ?></td>
-				      <td><?php echo $movie->descripcion ?></td>
-				      <td><?php echo $movie->id_usuario_FK ?></td>
-				      <td><?php echo $movie->id_estado_FK ?></td>
+				      <td><?php echo $movie->id ?></td>
+				      <td><?php echo $movie->name ?></td>
+
+				      
+
+				      <td class="acortador" onfocus="funcion()"><?php echo $movie->description ?></td>
+
+						<script>
+
+						function funcion(){
+			  				document.write(<?php echo $movie->description ?>);
+			  				document.write('<?php echo $movie->description ?>');
+			  		  	} 
+						</script>
+				       
+
+				      <td><?php echo $movie->user ?></td>
+				      <td><?php echo $movie->status ?></td>
+<!-- 				  	  <?php //endforeach ?> -->
+<!-- 				  	  <?php //foreach ($category_movie //as $categories) : ?> -->
 				      <td>
-				      	<a href="#" class="btn btn-warning">Editar</a>
-				      	<a href="#" class="btn btn-danger">Eliminar</a>
+				      	<a href="?controller=movie&method=listCategories&id=<?php echo $movie->id ?>" class="btn btn-info" title="Categorías :D" id="btnCategories">Categorías</a>
+				      </td>
+<!-- 							<?php //endforeach ?> -->
+<!--     			  	  <?php //foreach ($movies //as $movie) : ?> -->
+				      <td>
+				      	
+				      	<?php if ($movie->status_id==1) {
+
+			      			?>
+			      			
+			      			<a href="?controller=movie&method=updateMovieStatus&id=<?php echo $movie->id ?>" class="btn btn-primary" class="btn btn-danger">Inactivar</a>
+			      		<?php }else{				      	
+			      			?> 
+			      			<a href="?controller=movie&method=updateMovieStatus&id=<?php echo $movie->id ?>" class="btn btn-success" class="btn btn-danger">Activar</a>
+			      		<?php } ?>
+				      	<!-- <a href="?controller=movie&method=delete&id=<?php //echo $movie->id ?>" class="btn btn-danger" class="btn btn-danger">Eliminar</a> -->
+				      </td>
+				      <td>
+				      	<?php if ($movie->status_id==1) {
+				      		
+				      	 ?>
+				      	 <a href="?controller=movie&method=edit&id=<?php echo $movie->id ?>" class="btn btn-warning" class="btn btn-warning">Editar</a>
+				      	<?php } ?>
 				      </td>				      				      				      
 				    </tr>
 				<?php endforeach ?>

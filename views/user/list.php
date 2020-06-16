@@ -1,42 +1,60 @@
-<main class="container">
+<main class="container mb-5">
 	<section class="col-md-12 text-center">
-		<h1>Listado de usuarios</h1>
-		<div>
-			<h2>Usuarios</h2>
+		<h1 class="p-2">Listado de usuarios</h1>
+		<div class="row justify-content-center my-2">
 			<!-- mostrar vista -->
-			<a href="?controller=user&method=add" class="btn btn-success">Agregar</a>
-		</div>
-		<section class="col-md-12 table-responsive">
+			<div class="col-12 col-sm-12 my-1">
+				<h2>Usuarios</h2>
+				<a href="?controller=user&method=add" class="btn btn-success">Agregar</a>
+			</div>
 			
-			<table class="table table-striped table-dark table-hover">
+		</div>
+
+			<section class="col-12 col-sm-12 col-md-12 table-responsive">
+			
+			<table class="table table-striped table-dark table-hover stacktable datatable table-bordered table-sm">
 			  <thead>
 			    <tr>
 			      <th scope="col">#</th>
 			      <th scope="col">Nombre</th>
 			      <th scope="col">Email</th>
 			      <th scope="col">Estado</th>
-			      <th scope="col">Rol</th>
+			      <th scope="col">Rol</th>			
 			      <th scope="col">Acciones</th>
+			      <th scope="col">Editar</th>
 			    </tr>
 			  </thead>
 			  <tbody>
 			  	<?php foreach ($users as $user) : ?>
 				    <tr>
-				      <td><?php echo $user->id_usuario_PK ?></td>
-				      <td><?php echo $user->nombre_usuario ?></td>
-				      <td><?php echo $user->correo ?></td>
-				      <td><?php echo $user->id_estado_FK ?></td>
-				      <td><?php echo $user->id_rol_FK ?></td>
+				      <td><?php echo $user->id ?></td>
+				      <td><?php echo $user->name ?></td>
+				      <td><?php echo $user->email ?></td>
+				      <td><?php echo $user->status ?></td>
+				      <td><?php echo $user->role ?></td>
 				      <td>
-				      	<a href="#" class="btn btn-warning">Editar</a>
-				      	<a href="#" class="btn btn-danger">Eliminar</a>
+				      	
+			      		<?php if ($user->status_id==1) {
+
+			      			?>			      						      	   			      	   
+			      			<a href="?controller=user&method=updateUserStatus&id=<?php echo $user->id ?>" class="btn btn-danger" class="btn btn-danger">Inactivar</a>
+			      		<?php }else{				      	
+			      			?> 
+			      			<a href="?controller=user&method=updateUserStatus&id=<?php echo $user->id ?>" class="btn btn-success" class="btn btn-danger">Activar</a>
+			      		<?php } ?>
+				      </td>
+				      <td>
+				      	<?php if ($user->status_id==1) {
+				      		?>
+
+							<a href="?controller=user&method=edit&id=<?php echo $user->id ?>" class="btn btn-warning">Editar</a>
+				      	<?php } ?>
 				      </td>				      				      				      
 				    </tr>
 				<?php endforeach ?>
 			  </tbody>
 			</table>
-		
-
 		</section>	
+
 	</section>
 </main>

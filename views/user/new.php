@@ -25,6 +25,26 @@
 						<label>Contraseña</label>
 						<input type="password" name="password" class="form-control" placeholder="Ingrese contraseña">
 					</div>
+					<div class="form-group">
+						<label>Rol</label>
+						<select name="roles_id" class="form-control">
+							<option value="">Seleccione...</option>
+							<?php 
+								foreach ($roles as $role) {
+									if ($role->id == $data[0]->roles_id) {
+										?>
+											<option selected value="<?php echo $role->id ?>"><?php echo $role->name ?></option>
+										<?php
+									}else{
+										?>
+											<option value="<?php echo $role->id ?>"><?php echo $role->name ?></option>
+										<?php
+									}
+								}
+							?>
+						</select>
+						<p class="h6 text-muted text-center">Verifica que hayan roles activados</p> 
+					</div>
 					<!-- el estado se guarda solito -->
 					<div class="form-group">
 						<button class="btn btn-primary">Guardar</button>

@@ -6,14 +6,21 @@
  */
 
 require 'models/User.php';
+require 'models/Status.php';
+require 'models/Role.php';
 
 class UserController 
 {
 	private $model;
+    private $status;
+    private $role;
 
 	public function __construct()
 	{
 		$this->model = new User;
+        $this->status = new Status;
+        $this->role = new Role;
+
 	}
 
     public function index()
@@ -25,13 +32,16 @@ class UserController
 
     }
 
+    // muestra la vista de crear
     public function add()
     {
         require 'views/layout.php';
+        $roles = $this->role->getActiveRoles();
         require 'views/user/new.php';
 
     }
 
+    // realiza el proceso de guardar
     public function save()
     {
 
@@ -39,6 +49,66 @@ class UserController
         header('Location: ?controller=user');
 
     }
+
+    // muestra la vista de editar
+    public function edit()
+    {
+        if (isset($_REQUEST['id'])) {
+            $id = $_REQUEST['id'];
+            $data = $this->model->getUserById($id);
+            $statuses = $this->status->getAll();
+            $roles = $this->role->getActiveRoles();
+            require 'views/layout.php';
+            require 'views/user/edit.php'; 
+
+        }else{
+            echo "Error :(";
+        }
+        
+    }
+
+    // realiza el proceso de editar
+    public function update()
+    {
+        if(isset($_POST)){
+            $this->model->editUser($_POST);
+            header('Location: ?controller=user');
+        }else{
+            echo "Error :(";
+        }
+    }
+
+
+    //  // realiza el proceso de eliminar
+    // public function delete()
+    // {
+    //     $this->model->deleteUser($_REQUEST);
+    //     header('Location: ?controller=user');
+    // }
+
+    public function updateUserStatus()
+    {
+        $user = $this->model->getUserById($_REQUEST['id']);
+       
+
+        if ($user[0]->status_id==1) {
+            $data = [
+                        'id' =>$user[0]->id,
+                        'status_id' => 2
+                    ];
+        }elseif($user[0]->status_id==2){
+            $data = [
+                        'id' =>$user[0]->id,
+                        'status_id' => 1
+                    ];
+        }
+        $this->model->editUserStatus($data);
+        header('Location: ?controller=user');
+
+
+    }
+
+ 
 }
 
 

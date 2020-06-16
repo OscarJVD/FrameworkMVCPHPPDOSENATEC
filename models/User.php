@@ -7,12 +7,11 @@
 class User
 {
 	
-	private $id_usuario_PK;
-	private $id_estado_FK;
-	private $id_rol_FK;
-	private $nombre_usuario;
-	private $correo;
-	private $clave;
+	private $id;	
+	private $name;
+	private $email;
+	private $status_id;
+	private $roles_id;
 	private $pdo;
 
 
@@ -28,7 +27,8 @@ class User
 	public function getAll()
 	{
 		try {
-			$strSql = "SELECT * FROM usuario";
+			$strSql = "SELECT u.*,s.status as status,r.name as role FROM users u INNER JOIN statuses s ON s.id = u.status_id
+						INNER JOIN roles r ON r.id = u.roles_id ORDER BY u.id ASC";
 			// llamado al metodo general que ejecuta un select a la bd
 			$query = $this->pdo->select($strSql);
 			return $query;
@@ -40,27 +40,57 @@ class User
     // peticion request
 	public function newUser($data)
 	{
-		try {			
-			// PARA EL ESTADO
-			$props = [
-				"controller" => "nulo",
-				"method" => "nulo",
-				'id_estado_FK' => 1,
-				'id_rol_FK' => null,
-				'nombre_usuario' => $data["name"],
-				"correo" => $data["email"],
-				"clave" => $data["password"]
-			];
-			// metodo generico 
-			// return $props;
-		   $this->pdo->insert('usuario',$props);
+		try {
+			$data['status_id'] = 1;
+			$this->pdo->insert('users', $data);
+		} catch (PDOException $e){
+			die($e->getMessage());
+		}
+	}
 
+	public function getUserById($id)
+	{
+		try {			
+			$strSql = "SELECT * FROM users WHERE id=:id";
+			$arrayData = ['id'=>$id];
+			$query = $this->pdo->select($strSql, $arrayData);
+			return $query;
 		} catch (PDOException $e) {
 			die($e->getMessage());
 		}
 	}
 
 
+	public function editUser($data)
+	{
+		try {			
+			$strWhere = 'id = '.$data['id'];
+			$this->pdo->update('users',$data,$strWhere);
+
+		} catch (PDOException $e) {
+			die($e->getMessage());
+		}
+	}
+
+	// public function deleteUser($data)
+	// {
+	// 	try {			
+	// 		$strWhere = 'id = '.$data['id'];
+	// 		$this->pdo->delete('users',$strWhere);
+
+	// 	} catch (PDOException $e) {
+	// 		die($e->getMessage());
+	// 	}
+	// }
+	// 
+	public function editUserStatus($data){
+		try {
+			$strWhere = 'id =' . $data['id'];
+			$this->pdo->update('users',$data,$strWhere);
+		} catch (PDOException $e) {
+			die($e->getMessage());
+		}
+	}
 
 }
 

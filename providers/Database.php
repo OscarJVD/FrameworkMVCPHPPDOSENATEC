@@ -57,39 +57,55 @@ class Database extends PDO
 	public function insert($table, $data)
 	{
 		try {
-			
-			// metodo para ordenar el array de datos
-			// ksort($data);
-			// eliminar los indices de controller y metodo
-			unset($data['controller'],$data['method']);
- 			// UNIR ELEMNTOS DE UN ARRAY EN UN SOLO STRING
-			$fieldNames = implode('` , `' ,array_keys($data));//array_keys trae los indices y values de los input que estoy enviando //de las tildes :v
-			$fieldValues = ':'.implode(', :', array_keys($data));
- 			// comillas como en mysql
-			$strSql = $this->prepare("INSERT INTO $table(`$fieldNames`)VALUES ($fieldValues)");
-			$datos =[];
+			ksort($data);
+			unset($data['controller'], $data['method']);
+			$fieldNames = implode('`, `', array_keys($data));
+			$fieldValues = ':' . implode(', :', array_keys($data));
+			$strSql = $this->prepare("INSERT INTO $table (`$fieldNames`)VALUES ($fieldValues)");
+
 			foreach ($data as $key => $value) {
-					//asigna cada value del form a una key 
-				$strSql->bindValue(":$key",$value);
-
+				$strSql->bindValue(":$key", $value);
 			}
-			$strSql->execute();
-			
 
+			$strSql->execute();
 		} catch (PDOException $e) {
 			die($e->getMessage());
 		}
 	}
 
-	public function update()
+
+	public function update($table,$data,$where)
 	{
-		
+		try {
+			ksort($data);
+			$fieldDetails=null;
+			foreach ($data as $key => $value) {
+				$fieldDetails .= "`$key` =:$key,";
+			}
+			$fieldDetails = rtrim($fieldDetails, ',');
+
+			$strSql = $this->prepare("UPDATE $table SET $fieldDetails WHERE $where");
+
+			foreach ($data as $key => $value) {
+				$strSql->bindValue(":$key", $value);
+			}
+			$strSql->execute();
+		} catch (PDOException $e) {
+			die($e->getMessage());
+		}
 	}
 
-	public function delete()
+
+	public function delete($table,$where,$limit=1)
 	{
-		
+		try {
+			return $this->exec("DELETE FROM $table WHERE $where LIMIT $limit");
+		} catch (PDOException $e) {
+			die($e->getMessage());
+		}
 	}
+
+
 }
 
 
