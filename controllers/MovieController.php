@@ -44,11 +44,13 @@ class MovieController
     }
 
     public function listCategories(){
+
         if (isset($_REQUEST['id'])) {
             $id = $_REQUEST['id'];
-            $data = $this->model->getCategoryMovieById($id);
-            $statuses = $this->status->getAll();
+            $data = $this->model->getCategoriesMovieById($id);
+            // $statuses = $this->status->getAll();
             $categories = $this->category->getAll();
+        
             require 'views/layout.php';
             require 'views/partial/categories.php';
         }else{

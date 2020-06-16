@@ -14,7 +14,7 @@ class Database extends PDO
 	private $dbName = 'solupelis';
 	private $charset = 'utf8';
     private $user = 'root';
-    private $password = '';
+    private $password = 'monserrate1010';
 
     // sobrecarga al constructor con cadena de conexion a la BD
 	public function __construct()
